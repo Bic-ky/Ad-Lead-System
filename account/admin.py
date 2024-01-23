@@ -3,12 +3,12 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ('phone_number', 'user_name', 'role', 'is_active',)
+    list_display = ('phone_number','role', 'is_active',)
     ordering = ('-date_joined',)
     filter_horizontal = ()
     list_filter = ()
     fieldsets = (
-        (None, {'fields': ('phone_number', 'user_name','role','u_type','email','full_name','is_active')}),
+        (None, {'fields': ('phone_number','email','full_name','is_active', 'role',)}),
         ('Permissions', {'fields': ('is_admin', 'is_staff', 'is_superuser')}),
     )
     add_fieldsets = (

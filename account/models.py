@@ -26,25 +26,16 @@ class UserManager(BaseUserManager):
     
 class User(AbstractBaseUser):
     ADMIN = 1
-    USER = 2
+    AGENT = 2
 
     ROLE_CHOICES = (
         (ADMIN, 'ADMIN'),
-        (USER, 'USER'),
+        (AGENT, 'AGENT'),
     )
-    user_name = models.CharField(max_length=50, blank=True, null=True)
     phone_number = models.CharField(max_length=50,unique=True)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
-    USER_CHOICES = (
-        ('FINANCE HEAD', 'FINANCE HEAD'),
-        ('CS HEAD', 'CS HEAD'),
-        ('RECOVERY HEAD', 'RECOVER HEAD'),  
-        ('RECOVERY AGENT', 'RECOVERY AGENT'),
-        ('FINANCE CLERK','FINANCE CLERK'),
-    )
     full_name = models.CharField(max_length=50,blank=True)
     email = models.EmailField(max_length=100, unique=False, default="")
-    
     
     created_date = models.DateTimeField(default=timezone.now)
     modified_date = models.DateTimeField(auto_now=True)
@@ -71,6 +62,6 @@ class User(AbstractBaseUser):
         if self.role == 1:
             user_role = 'ADMIN'
         elif self.role == 2:
-            user_role = 'USER'
+            user_role = 'AGENT'
         return user_role
     

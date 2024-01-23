@@ -11,7 +11,7 @@ from django.core.exceptions import PermissionDenied
 def detectUser(user):
     if user.role == User.ADMIN:
             redirectUrl = 'account:admindashboard'
-    elif user.role == User.USER:
+    elif user.role == User.AGENT:
         redirectUrl = 'account:userdashboard'
                
     elif user.role == None and user.is_superuser:

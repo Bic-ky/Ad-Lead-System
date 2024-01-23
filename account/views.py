@@ -4,14 +4,12 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import timedelta
-
 from .utils import check_role_admin, check_role_user, detectUser
 from django.core.exceptions import PermissionDenied
 from django.utils.http import urlsafe_base64_decode
 from .models import User
 from .utils import detectUser, send_verification_email
 from django.contrib.auth.tokens import default_token_generator
-
 from django.db.models import Sum, F, Max, Q
 import json
 from django.http import JsonResponse
@@ -62,7 +60,7 @@ def myAccount(request):
 def userdashboard(request):
     
 
-    return render(request, 'user_dash.html')
+    return render(request, 'agent_dash.html')
 
 def admindashboard(request):
    
