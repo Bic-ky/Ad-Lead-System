@@ -57,3 +57,17 @@ class Newspaper(models.Model):
 
     def _str_(self):
         return self.name 
+    
+class Advs(models.Model):
+    company = models.ForeignKey('Company', on_delete=models.CASCADE)
+    newspaper = models.ForeignKey('Newspaper', on_delete=models.CASCADE)
+    publish_date = models.DateField()
+    size = models.FloatField()
+    caption = models.CharField(max_length=255)  # You can adjust the max_length accordingly
+    adv_type = models.FloatField()
+
+    def __str__(self):
+        return f"{self.company} - {self.newspaper} - {self.publish_date}"
+    
+
+
