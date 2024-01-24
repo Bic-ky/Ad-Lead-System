@@ -1,7 +1,8 @@
-from import_export import resources, fields
+from import_export import resources, fields , widgets
 from django.contrib import admin
 from .models import Province, District, Municipality, Company, Officer, Newspaper
 from import_export.admin import ImportExportModelAdmin
+from import_export.widgets import ForeignKeyWidget
 
 class ProvinceResource(resources.ModelResource):
     class Meta:
@@ -10,7 +11,6 @@ class ProvinceResource(resources.ModelResource):
 class DistrictResource(resources.ModelResource):
     class Meta:
         model = District
-
 class MunicipalityResource(resources.ModelResource):
     class Meta:
         model = Municipality
@@ -50,3 +50,4 @@ class OfficerAdmin(ImportExportModelAdmin):
 @admin.register(Newspaper)
 class NewspaperAdmin(ImportExportModelAdmin):
     resource_class = NewspaperResource
+

@@ -1,7 +1,7 @@
 from django.db import models
 
 class Province(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100 )
 
     def __str__(self):
         return self.name
@@ -30,7 +30,7 @@ class Company(models.Model):
     website = models.URLField(blank=True, null=True)
     address = models.TextField()
 
-    def __str__(self):
+    def _str_(self):
         return self.name
 
 class Officer(models.Model):
@@ -41,7 +41,7 @@ class Officer(models.Model):
     office = models.CharField(max_length=100)
     email = models.EmailField()
 
-    def __str__(self):
+    def _str_(self):
         return f"{self.name}, {self.designation}, {self.company}"
 
 class Newspaper(models.Model):
@@ -55,5 +55,5 @@ class Newspaper(models.Model):
     back_bw = models.BooleanField(default=False)
     back_color = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.name
+    def _str_(self):
+        return self.name 
