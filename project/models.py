@@ -20,17 +20,29 @@ class Municipality(models.Model):
     def __str__(self):
         return f"{self.name}, {self.district}"
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class SubCategory(models.Model):
+    name = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.name
+
 class Company(models.Model):
     name = models.CharField(max_length=100)
-    category = models.CharField(max_length=100)
-    sub_category = models.CharField(max_length=100)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     province = models.ForeignKey(Province, on_delete=models.CASCADE)
     district = models.ForeignKey(District, on_delete=models.CASCADE)
     municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE)
     website = models.URLField(blank=True, null=True)
-    address = models.TextField()
+    address = models.TextField(blank=True, null=True)
 
-    def _str_(self):
+    def __str__(self):
         return self.name
 
 class Officer(models.Model):
@@ -46,28 +58,39 @@ class Officer(models.Model):
 
 class Newspaper(models.Model):
     name = models.CharField(max_length=100)
-    type = models.CharField(max_length=100)
-    level = models.CharField(max_length=100)
-    front_bw = models.BooleanField(default=False)
-    front_color = models.BooleanField(default=False)
-    inside_bw = models.BooleanField(default=False)
-    inside_color = models.BooleanField(default=False)
-    back_bw = models.BooleanField(default=False)
-    back_color = models.BooleanField(default=False)
-
-    def _str_(self):
-        return self.name 
+    TYPE_CHOICES = (
+        ('National', 'National'),
+        ('Provincial', 'Provincial'),
+        ('Local', 'Local'),
+    )
+    type = models.CharField(max_length=100, choices=TYPE_CHOICES)
+    
+    LEVEL_CHOICES =(
+        ('A','A'),
+        ('B','B'),
+        ('C','C')
+    ) 
+    level = models.CharField(max_length=100, choices=LEVEL_CHOICES)
+    front_bw = models.FloatField(default=0.0)
+    front_color = models.FloatField(default=0.0)
+    inside_bw = models.FloatField(default=0.0)
+    inside_color = models.FloatField(default=0.0)
+    back_bw = models.FloatField(default=0.0)
+    back_color = models.FloatField(default=0.0)
+    
+    def __str__(self):
+        return self.name
     
 class Advs(models.Model):
     company = models.ForeignKey('Company', on_delete=models.CASCADE)
     newspaper = models.ForeignKey('Newspaper', on_delete=models.CASCADE)
     publish_date = models.DateField()
     size = models.FloatField()
-    caption = models.CharField(max_length=255)  # You can adjust the max_length accordingly
-    adv_type = models.FloatField()
-
+    caption = models.CharField(max_length=255)  
+    adv_type = models.CharField(max_length=255) 
+    balance = models.FloatField(default=False , null=True)
+    
     def __str__(self):
         return f"{self.company} - {self.newspaper} - {self.publish_date}"
     
-
 

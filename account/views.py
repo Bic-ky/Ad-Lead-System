@@ -10,12 +10,10 @@ from django.utils.http import urlsafe_base64_decode
 from .models import User
 from .utils import detectUser, send_verification_email
 from django.contrib.auth.tokens import default_token_generator
-from django.db.models import Sum, F, Max, Q
-import json
-from django.http import JsonResponse
-from django.utils import timezone
-from datetime import datetime, timedelta, date
-# Create your views here.
+from django.db.models.functions import Coalesce
+
+
+
 
 
 
@@ -57,9 +55,8 @@ def myAccount(request):
     return redirect(redirectUrl)
 
 
-def userdashboard(request):
+def agentdashboard(request):
     
-
     return render(request, 'agent_dash.html')
 
 def admindashboard(request):

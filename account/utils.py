@@ -12,7 +12,7 @@ def detectUser(user):
     if user.role == User.ADMIN:
             redirectUrl = 'account:admindashboard'
     elif user.role == User.AGENT:
-        redirectUrl = 'account:userdashboard'
+        redirectUrl = 'account:agentdashboard'
                
     elif user.role == None and user.is_superuser:
         redirectUrl = '/admin'

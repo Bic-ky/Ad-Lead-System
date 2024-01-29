@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body text-black">
+        <h4><i class="mdi mdi-plus" style="color: green; font-size: 24px;"></i>NEW LEAD</h4>
+        <br>
+        <form method="POST" action="">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="newspaper"> <h5>Newspaper</h5> </label>
+                        {{ form.newspaper }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company"><h5>Company</h5></label>
+                        {{form.company}}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publish_date"><h5>Publish Date</h5></label>
+                        {{form.publish_date}}
+                    </div>
+                    <div class="form-group">
+                        <label for="caption"><h5>Caption</h5></label>
+                        {{form.caption}}
+                    </div>
+                    <div class="form-group">
+                        <label for="size"><h5>Size</h5></label>
+                        {{form.size}}
+                    </div>
+                    <div class="form-group">
+                        <label for="size"><h5>Page</h5></label>
+                        {{form.page}}
+                    </div>
+                    <div class="form-group">
+                        <label for="size"><h5>Type</h5></label>
+                        {{form.color_bw}}
+                    </div>                  
+                </div>
+
+
+            </div>
+            <br>
+            <button class="btn btn-warning btn-lg waves-effect waves-light" type="submit">Submit</button>
+        </form>
+    </div> <!-- end card-body-->
+   
+</div> <!-- end card -->
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <!-- Load message -->
+        {% include 'alerts2.html' %}
+    </div>
+</div>
+{% endblock content %}

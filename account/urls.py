@@ -7,7 +7,7 @@ path('logout/',views.logout, name='logout'),
 
 path('myAccount/',views.myAccount, name='myAccount'),
 path('admindashboard/',views.admindashboard, name='admindashboard'),
-path('userdashboard/',views.userdashboard, name='userdashboard'),
+path('userdashboard/',views.agentdashboard, name='agentdashboard'),
 
 
 path('forgot_password/', views.forgot_password, name='forgot_password'),

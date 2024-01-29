@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body text-black">
+        <h4><i class="mdi mdi-plus" style="color: green; font-size: 24px;"></i>NEW COMPANY</h4>
+        <br>
+        <form method="POST" action="">
+            {% csrf_token %}
+            
+            {{ form.as_p }}  {# This will render the form fields as paragraphs #}
+        
+            <button class="btn btn-warning btn-lg waves-effect waves-light" type="submit">Submit</button>
+        </form>
+        
+    </div> <!-- end card-body-->
+   
+</div> <!-- end card -->
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <!-- Load message -->
+        {% include 'alerts2.html' %}
+    </div>
+</div>
+{% endblock content %}
