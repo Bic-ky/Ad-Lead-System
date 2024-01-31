@@ -83,6 +83,7 @@ def add_company(request):
     }
     return render(request, 'add_company.html', context)
 
+
 def add_newspaper(request):
     if request.method == 'POST':
         form = PaperForm(request.POST)
@@ -99,4 +100,4 @@ def add_newspaper(request):
     context = {
         'form': form,
     }
-    return render(request, 'add_company.html', context)
+    return render(request, 'add_newspaper.html', context)

@@ -19,7 +19,7 @@ class NewspaperForm(forms.ModelForm):
 
         # Set caption as CharField
         self.fields['caption'] = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-        self.fields['size'] = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+        self.fields['size'] = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control','step': 'any', 'min': '0'}))
         
         # Set dropdowns for Page and Color/BW
         page_choices = [('front', 'Front'), ('inside', 'Inside'), ('back', 'Back')]
@@ -76,12 +76,13 @@ class PaperForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     type = forms.ChoiceField(choices=TYPE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
     level = forms.ChoiceField(choices=LEVEL_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
-    front_bw = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-    front_color = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-    inside_bw = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-    inside_color = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-    back_bw = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-    back_color = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    front_bw = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any', 'min': '0'}))
+    front_color = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any', 'min': '0'}))
+    inside_bw = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any', 'min': '0'}))
+    inside_color = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any', 'min': '0'}))
+    back_bw = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any', 'min': '0'}))
+    back_color = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any', 'min': '0'}))
+
 
     class Meta:
         model = Newspaper

@@ -1,12 +1,26 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <!-- Load message -->
+      <div id="success-message"></div>
+    </div>
+  </div>
+  <style>
+    #success-message {
+      position: fixed;
+      bottom: 0;
+      right: 20px;
+      z-index: 99;
+      padding: 10px;
+    } 
+  </style>
 <div class="card">
     <div class="card-body text-black">
         <h4><i class="mdi mdi-plus" style="color: green; font-size: 24px;"></i>NEW LEAD</h4>
         <br>
-        <form method="POST" action="">
+        <form method="POST" action="" id="lead-form">
             {% csrf_token %}
             
             <div class="row">
@@ -34,11 +48,11 @@
                         {{form.size}}
                     </div>
                     <div class="form-group">
-                        <label for="size"><h5>Page</h5></label>
+                        <label for="page"><h5>Page</h5></label>
                         {{form.page}}
                     </div>
                     <div class="form-group">
-                        <label for="size"><h5>Type</h5></label>
+                        <label for="color_bw"><h5>Type</h5></label>
                         {{form.color_bw}}
                     </div>                  
                 </div>
@@ -51,10 +65,39 @@
     </div> <!-- end card-body-->
    
 </div> <!-- end card -->
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <!-- Load message -->
-        {% include 'alerts2.html' %}
-    </div>
-</div>
+<script type="text/javascript">
+    $(document).on('submit', '#lead-form', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "add_lead" %}',
+            data: {
+                newspaper: $("#id_newspaper").val(),
+                company: $("#id_company").val(),
+                publish_date: $("#id_publish_date").val(),
+                caption: $("#id_caption").val(),
+                size: $("#id_size").val(),
+                page: $("#id_page").val(),
+                color_bw: $("#id_color_bw").val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function (data) {
+              // Update the success message dynamically
+              $('#success-message').html('<div class="alert alert-success">Lead was added successfully</div>');
+          
+              // Reset the form elements
+              $('#lead-form').trigger('reset');
+          
+              // Set a timer to hide the success message after 3 seconds (3000 milliseconds)
+              setTimeout(function() {
+                  $('#success-message').empty(); // Remove the content of the success message
+              }, 3000);
+          },
+          
+            error: function (xhr, textStatus, errorThrown) {
+                console.log("Error:", errorThrown);
+            }
+        });
+    });
+</script>
 {% endblock content %}

@@ -1,26 +1,117 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
-
-<div class="card">
-    <div class="card-body text-black">
-        <h4><i class="mdi mdi-plus" style="color: green; font-size: 24px;"></i>ADD NEWSPAPER</h4>
-        <br>
-        <form method="POST" action="">
-            {% csrf_token %}
-            
-            {{ form.as_p }}  
-        
-            <button class="btn btn-warning btn-lg waves-effect waves-light" type="submit">Submit</button>
-        </form>
-        
-    </div> <!-- end card-body-->
-   
-</div> <!-- end card -->
+{% extends "base.html" %} {% load static %} {% block content %}
 <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <!-- Load message -->
-        {% include 'alerts2.html' %}
-    </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <!-- Load message -->
+    <div id="success-message"></div>
+  </div>
 </div>
+<style>
+  #success-message {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    z-index: 99;
+    padding: 10px;
+  } 
+</style>
+<div class="card">
+  <div class="card-body text-black">
+    <h4>
+      <i class="mdi mdi-plus" style="color: green; font-size: 24px"></i>ADD
+      NEWSPAPER
+    </h4>
+    <br />
+    <form method="POST" action="" id="paper-form">
+      {% csrf_token %}
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="name"> <h5>Name:</h5> </label>
+            {{ form.name }}
+          </div>
+
+          <div class="form-group">
+            <label for="type"><h5>Type:</h5></label>
+            {{form.type}}
+          </div>
+          <div class="form-group">
+            <label for="level"><h5>Level:</h5></label>
+            {{form.level}}
+          </div>
+          <div class="form-group">
+            <label for="front_bw"><h5>Front bw:</h5></label>
+            {{form.front_bw}}
+          </div>
+          <div class="form-group">
+            <label for="front_color"><h5>Front color:</h5></label>
+            {{form.front_color}}
+          </div>
+          <div class="form-group">
+            <label for="inside_bw"><h5>Inside bw:</h5></label>
+            {{form.inside_bw}}
+          </div>
+          <div class="form-group">
+            <label for="inside_color"><h5>Inside Color:</h5></label>
+            {{form.inside_color}}
+          </div>
+          <div class="form-group">
+            <label for="back_bw"><h5>Back bw:</h5></label>
+            {{form.back_bw}}
+          </div>
+          <div class="form-group">
+            <label for="back_color"><h5>Back color:</h5></label>
+            {{form.back_color}}
+          </div>
+        </div>
+      </div>
+      <br />
+      <button
+        class="btn btn-warning btn-lg waves-effect waves-light"
+        type="submit"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+  <!-- end card-body-->
+</div>
+<!-- end card -->
+<script type="text/javascript">
+  $(document).on('submit', '#paper-form', function (e) {
+      e.preventDefault();
+      $.ajax({
+          type: 'POST',
+          url: '{% url "add_newspaper" %}',
+          data: {
+              name: $("#id_name").val(),
+              type: $("#id_type").val(),
+              level: $("#id_level").val(),
+              front_bw: $("#id_front_bw").val(),
+              front_color: $("#id_front_color").val(),
+              inside_bw: $("#id_inside_bw").val(),
+              inside_color: $("#id_inside_color").val(),
+              back_bw: $("#id_back_bw").val(),
+              back_color: $("#id_back_color").val(),
+              csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+          },
+          success: function (data) {
+            // Update the success message dynamically
+            $('#success-message').html('<div class="alert alert-success">Newspaper was added successfully</div>');
+        
+            // Reset the form elements
+            $('#paper-form').trigger('reset');
+        
+            // Set a timer to hide the success message after 3 seconds (3000 milliseconds)
+            setTimeout(function() {
+                $('#success-message').empty(); // Remove the content of the success message
+            }, 3000);
+        },
+        
+          error: function (xhr, textStatus, errorThrown) {
+              console.log("Error:", errorThrown);
+          }
+      });
+  });
+</script>
 {% endblock content %}
