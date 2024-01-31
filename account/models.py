@@ -2,6 +2,7 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models.signals import post_save, pre_save
+from project.models import Province
 # Create your models here.
 
 class UserManager(BaseUserManager):
@@ -40,7 +41,7 @@ class User(AbstractBaseUser):
     created_date = models.DateTimeField(default=timezone.now)
     modified_date = models.DateTimeField(auto_now=True)
     date_joined = models.DateTimeField(auto_now=True)
-
+    
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
@@ -65,3 +66,15 @@ class User(AbstractBaseUser):
             user_role = 'AGENT'
         return user_role
     
+
+
+class AdminProvince(models.Model):
+    admin = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE,
+        limit_choices_to={'role': User.ADMIN}
+    )
+    province = models.ForeignKey(Province, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"{self.admin}, {self.province}"
