@@ -44,7 +44,10 @@ class CompanyForm(forms.ModelForm):
         self.fields['district'].widget = forms.Select(attrs={'class': 'form-control'})
         self.fields['municipality'].widget = forms.Select(attrs={'class': 'form-control'})
         self.fields['website'].widget = forms.URLInput(attrs={'class': 'form-control'})
-        self.fields['address'].widget = forms.Textarea(attrs={'class': 'form-control'})
+        self.fields['address'].widget = forms.Textarea(
+            attrs={'class': 'form-control', 'rows': 3,}
+        )
+
 
         # Add queryset to category field
         self.fields['category'].queryset = Category.objects.all()
@@ -54,12 +57,30 @@ class CompanyForm(forms.ModelForm):
 
         # Add queryset to province field
         self.fields['province'].queryset = Province.objects.all()
+                
+        self.fields['district'].queryset = District.objects.none()
+        
+        if 'province' in self.data:
+            try:
+                province_id = int(self.data.get('province'))
+                self.fields['district'].queryset = District.objects.filter(province_id=province_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['district'].queryset = self.instance.province.district_set.order_by('name')
+        
+        self.fields['municipality'].queryset = Municipality.objects.none()
 
-        # Add queryset to district field
-        self.fields['district'].queryset = District.objects.all()
+        if 'district' in self.data:
+            try:
+                district_id = int(self.data.get('district'))
+                self.fields['municipality'].queryset = Municipality.objects.filter(district_id=district_id).order_by('name')
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['municipality'].queryset = self.instance.district.municipality_set.order_by('name')
 
-        # Add queryset to municipality field
-        self.fields['municipality'].queryset = Municipality.objects.all()
+        
         
 class PaperForm(forms.ModelForm):
     TYPE_CHOICES = (

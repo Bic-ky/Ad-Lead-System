@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 
+
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <!-- Load message -->
@@ -17,19 +18,21 @@
     padding: 10px;
   } 
 </style>
-<div class="card">
+<div class="card" style="background-color:#F9E4C8;">
   <div class="card-body text-black">
     <h4>
       <i class="mdi mdi-plus" style="color: green; font-size: 24px"></i>NEW COMPANY
     </h4>
     <br />
-    <form method="POST" action="" id="company-form">
+    <form method="POST" action="" id="company-form" data-districts-url="{% url 'get_districts' %}" 
+    data-municipalities-url="{% url 'get_municipalities' %}">
       {% csrf_token %}
 
       <div class="row">
+        
         <div class="col-lg-6">
           <div class="form-group">
-            <label for="name"><h5>Name:</h5></label>
+            <label for="name"><h5>Company Name:</h5></label>
             {{ form.name }}
           </div>
 
@@ -42,6 +45,14 @@
             <label for="sub_category"><h5>Sub Category:</h5></label>
             {{ form.sub_category }}
           </div>
+          
+          <div class="form-group">
+            <label for="website"><h5>Website:</h5></label>
+            {{ form.website }}
+          </div>
+          
+        </div>
+        <div class="col-lg-6">
           <div class="form-group">
             <label for="province"><h5>Province:</h5></label>
             {{ form.province }}
@@ -53,10 +64,6 @@
           <div class="form-group">
             <label for="municipality"><h5>Municipality:</h5></label>
             {{ form.municipality }}
-          </div>
-          <div class="form-group">
-            <label for="website"><h5>Website:</h5></label>
-            {{ form.website }}
           </div>
           <div class="form-group">
             <label for="address"><h5>Address:</h5></label>
@@ -72,42 +79,85 @@
 </div>
 <!-- end card -->
 
+<script>
+  $(document).ready(function() {
+    // Province change event
+    $("#id_province").change(function () {
+      const districtUrl = "{% url 'get_districts' %}";
+      const provinceId = $(this).val();
 
-<script type="text/javascript">
-    $(document).on('submit', '#company-form', function (e) {
-        e.preventDefault();
-        $.ajax({
-            type: 'POST',
-            url: '{% url "add_company" %}',
-            data: {
-                name: $("#id_name").val(),
-                category: $("#id_category").val(),
-                sub_category: $("#id_sub_category").val(),
-                province: $("#id_province").val(),
-                district: $("#id_district").val(),
-                municipality: $("#id_municipality").val(),
-                website: $("#id_website").val(),
-                address: $("#id_address").val(),
-                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-            },
-            success: function (data) {
-              // Update the success message dynamically
-              $('#success-message').html('<div class="alert alert-success">Company was added successfully</div>');
-          
-              // Reset the form elements
-              $('#company-form').trigger('reset');
-          
-              // Set a timer to hide the success message after 3 seconds (3000 milliseconds)
-              setTimeout(function() {
-                  $('#success-message').empty(); // Remove the content of the success message
-              }, 3000);
-          },
-          
-            error: function (xhr, textStatus, errorThrown) {
-                console.log("Error:", errorThrown);
-            }
-        });
+      // Fetch districts based on the selected province
+      $.ajax({
+        url: districtUrl,
+        data: {
+          'province_id': provinceId
+        },
+        success: function (data) {
+          $("#id_district").html(data);
+        },
+        error: function (xhr, status, error) {
+          console.error(xhr.responseText);
+        }
+      });
     });
+
+    // District change event
+    $("#id_district").change(function () {
+      const municipalityUrl = "{% url 'get_municipalities' %}";
+      const districtId = $(this).val();
+
+      // Fetch municipalities based on the selected district
+      $.ajax({
+        url: municipalityUrl,
+        data: {
+          'district_id': districtId
+        },
+        success: function (data) {
+          $("#id_municipality").html(data);
+        },
+        error: function (xhr, status, error) {
+          console.error(xhr.responseText);
+        }
+      });
+    });
+
+    // Form submission
+    $(document).on('submit', '#company-form', function (e) {
+      e.preventDefault();
+      $.ajax({
+        type: 'POST',
+        url: '{% url "add_company" %}',
+        data: {
+          name: $("#id_name").val(),
+          category: $("#id_category").val(),
+          sub_category: $("#id_sub_category").val(),
+          province: $("#id_province").val(),
+          district: $("#id_district").val(),
+          municipality: $("#id_municipality").val(),
+          website: $("#id_website").val(),
+          address: $("#id_address").val(),
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function (data) {
+          // Update the success message dynamically
+          $('#success-message').html('<div class="alert alert-success">Company was added successfully</div>');
+
+          // Reset the form elements
+          $('#company-form').trigger('reset');
+
+          // Set a timer to hide the success message after 3 seconds (3000 milliseconds)
+          setTimeout(function() {
+            $('#success-message').empty(); // Remove the content of the success message
+          }, 3000);
+        },
+
+        error: function (xhr, textStatus, errorThrown) {
+          console.log("Error:", errorThrown);
+        }
+      });
+    });
+  });
 </script>
+
 
 {% endblock content %}

@@ -11,14 +11,14 @@ class District(models.Model):
     province = models.ForeignKey(Province, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.name}, {self.province}"
+        return f"{self.name}"
 
 class Municipality(models.Model):
     name = models.CharField(max_length=100)
     district = models.ForeignKey(District, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.name}, {self.district}"
+        return f"{self.name}"
 
 class Category(models.Model):
     name = models.CharField(max_length=100)

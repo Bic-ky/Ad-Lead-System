@@ -14,12 +14,9 @@
     padding: 10px;
   } 
 </style>
-<div class="card">
+<div class="card" style="background-color:#F9E4C8;">
   <div class="card-body text-black">
-    <h4>
-      <i class="mdi mdi-plus" style="color: green; font-size: 24px"></i>ADD
-      NEWSPAPER
-    </h4>
+    <h4 class="p-1" style="background-color:#F9CF93;">Paper Details</h4>
     <br />
     <form method="POST" action="" id="paper-form">
       {% csrf_token %}
@@ -27,7 +24,7 @@
       <div class="row">
         <div class="col-lg-6">
           <div class="form-group">
-            <label for="name"> <h5>Name:</h5> </label>
+            <label for="name"> <h5>Newspaper Name:</h5> </label>
             {{ form.name }}
           </div>
 
@@ -39,30 +36,48 @@
             <label for="level"><h5>Level:</h5></label>
             {{form.level}}
           </div>
-          <div class="form-group">
-            <label for="front_bw"><h5>Front bw:</h5></label>
-            {{form.front_bw}}
-          </div>
+          
+        </div>
+        
+      </div>
+      <br>
+      <h4 class="p-1" style="background-color:#F9CF93;">Paper Rates</h4>
+      <div class="row mt-3">
+        <div class="col-lg-6">
+          
+          <br>
+          
           <div class="form-group">
             <label for="front_color"><h5>Front color:</h5></label>
             {{form.front_color}}
+          </div>
+          
+          <div class="form-group">
+            <label for="inside_color"><h5>Inside Color:</h5></label>
+            {{form.inside_color}}
+          </div>
+          
+          <div class="form-group">
+            <label for="back_color"><h5>Back color:</h5></label>
+            {{form.back_color}}
+          </div>
+        </div>
+        <div class="col-lg-6">
+          
+          <br>
+          <div class="form-group">
+            <label for="front_bw"><h5>Front bw:</h5></label>
+            {{form.front_bw}}
           </div>
           <div class="form-group">
             <label for="inside_bw"><h5>Inside bw:</h5></label>
             {{form.inside_bw}}
           </div>
           <div class="form-group">
-            <label for="inside_color"><h5>Inside Color:</h5></label>
-            {{form.inside_color}}
-          </div>
-          <div class="form-group">
             <label for="back_bw"><h5>Back bw:</h5></label>
             {{form.back_bw}}
           </div>
-          <div class="form-group">
-            <label for="back_color"><h5>Back color:</h5></label>
-            {{form.back_color}}
-          </div>
+
         </div>
       </div>
       <br />

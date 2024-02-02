@@ -1,9 +1,12 @@
 from django.db.models import F, Sum
 from django.db.models.functions import Coalesce
-from .models import Advs,Newspaper,Province,District,Municipality
+from .models import Advs,Newspaper,Province,District,Municipality,Company
+from account.models import ProvinceAdmin
 from .forms import NewspaperForm,CompanyForm,PaperForm
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
+from .filters import CompanyFilter
+from django.http import JsonResponse,HttpResponse
 
 
 def calculate_adv_spend(company_id):
@@ -55,7 +58,7 @@ def add_lead(request):
             adv_type=adv_type,
             balance=balance
         )
-        messages.success(request, 'Lead was added Succesfully')
+        
 
         return redirect('add_lead')  
 
@@ -71,8 +74,7 @@ def add_company(request):
         if form.is_valid():
             # Save the form data if it's valid
             form.save()
-            messages.success(request, 'Company was added Succesfully')
-            
+           
             return redirect('add_company')
     else:
         # If the request method is not POST, create an instance of the form
@@ -90,7 +92,7 @@ def add_newspaper(request):
         if form.is_valid():
             # Save the form data if it's valid
             form.save()
-            messages.success(request, 'Newspaper was added Succesfully')
+            
             
             return redirect('add_newspaper')
     else:
@@ -101,3 +103,67 @@ def add_newspaper(request):
         'form': form,
     }
     return render(request, 'add_newspaper.html', context)
+
+
+def company(request):
+    admin = request.user
+
+    try:
+        # Fetch all ProvinceAdmin objects related to the admin
+        province_admins = ProvinceAdmin.objects.filter(admin=admin)
+
+        # Extract provinces from ProvinceAdmin objects
+        provinces = [province_admin.province for province_admin in province_admins]
+
+        # Fetch all companies
+        all_companies = Company.objects.all()
+
+        # Filter all companies based on the list of provinces
+        company_filter = CompanyFilter(request.GET, queryset=all_companies)
+        all_companies_filtered = company_filter.qs
+
+        # Fetch my companies and apply the same filters
+        mycompany = Company.objects.filter(province__in=provinces)
+        mycompany_filter = CompanyFilter(request.GET, queryset=mycompany)
+        mycompany_filtered = mycompany_filter.qs
+
+    except ProvinceAdmin.DoesNotExist:
+        # Handle the case where ProvinceAdmin does not exist for the admin
+        all_companies_filtered = Company.objects.none()
+        mycompany_filtered = Company.objects.none()
+
+    context = {
+        'company': all_companies_filtered,
+        'mycompany': mycompany_filtered,
+        'filter': company_filter,
+    }
+
+    return render(request, 'company_list.html', context)
+
+
+# views.py
+def get_districts(request):
+    province_id = request.GET.get('province_id')
+    districts = District.objects.filter(province_id=province_id).order_by('name')
+    options = '<option value="">Select District</option>'
+    
+    for district in districts:
+        options += f'<option value="{district.id}">{district.name}</option>'
+    
+    return HttpResponse(options)
+
+# views.py
+def get_municipalities(request):
+    district_id = request.GET.get('district_id')
+    municipalities = Municipality.objects.filter(district_id=district_id).order_by('name')
+    options = '<option value=""> Select Municiplaity</option>'
+
+    for municipality in municipalities:
+        options += f'<option value="{municipality.id}">{municipality.name}</option>'
+
+    return HttpResponse(options)
+
+
+
+
+

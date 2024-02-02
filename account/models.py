@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models.signals import post_save, pre_save
 from project.models import Province
+from django.contrib.auth import get_user_model
+
 # Create your models here.
 
 class UserManager(BaseUserManager):
@@ -67,14 +69,16 @@ class User(AbstractBaseUser):
         return user_role
     
 
+User = get_user_model()
 
-class AdminProvince(models.Model):
+class ProvinceAdmin(models.Model):
     admin = models.ForeignKey(
         User, 
         on_delete=models.CASCADE,
         limit_choices_to={'role': User.ADMIN}
     )
-    province = models.ForeignKey(Province, on_delete=models.CASCADE)
+    province = models.OneToOneField(Province, on_delete=models.CASCADE)
     
     def __str__(self):
         return f"{self.admin}, {self.province}"
+

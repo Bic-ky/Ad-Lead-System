@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User,AdminProvince
+from .models import User,ProvinceAdmin
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('phone_number','role', 'is_active',)
@@ -19,5 +19,5 @@ class CustomUserAdmin(UserAdmin):
     )
 
 
-admin.site.register(AdminProvince)
+admin.site.register(ProvinceAdmin)
 admin.site.register(User, CustomUserAdmin)

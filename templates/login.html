@@ -19,6 +19,7 @@
     <link href="{% static "assets/css/theme.css" %}" rel="stylesheet" type="text/css" />
     <link href="{% static "assets/css/icons.css" %}" rel="stylesheet" type="text/css" />
     <link href="{% static "assets/css/theme.min.css" %}" rel="stylesheet" type="text/css" />
+    <link href="{% static "assets/css/custom.css" %}" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -52,10 +53,7 @@
                         <div class="col-12 text-left">
                             <p class="text-muted mb-2"><a href="{% url 'account:forgot_password' %}" class="text-muted font-weight-medium ml-1">Forgot your password?</a></p>
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <!-- Load message -->
-                            {% include 'alerts2.html' %}
-                        </div>
+                        
                     </div>
                     <!-- end row -->
                 </div>
@@ -63,7 +61,10 @@
             
         </div>
     </div>
-
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <!-- Load message -->
+        {% include 'alerts2.html' %}
+    </div>
     <!-- jQuery  -->
     <script src="{% static "assets/js/jquery.min.js" %}"></script>
     <script src="{% static "assets/js/bootstrap.bundle.min.js" %}"></script>
