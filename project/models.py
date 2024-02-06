@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Province(models.Model):
     name = models.CharField(max_length=100 )
 
@@ -53,8 +54,8 @@ class Officer(models.Model):
     office = models.CharField(max_length=100)
     email = models.EmailField()
 
-    def _str_(self):
-        return f"{self.name}, {self.designation}, {self.company}"
+    def __str__(self):
+        return f"{self.name}, {self.designation}"
 
 class Newspaper(models.Model):
     name = models.CharField(max_length=100)
@@ -92,5 +93,13 @@ class Advs(models.Model):
     
     def __str__(self):
         return f"{self.company} - {self.newspaper} - {self.publish_date}"
+
+
+
+
+
+
+
+
     
 

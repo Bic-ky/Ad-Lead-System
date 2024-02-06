@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        background-image: url('{% static "img/5.svg" %}');
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        margin: 0;
+    }
+</style> 
+<div class="card" style="background-color:#F9E4C8;">
+    <div class="card-body text-black">
+        <div class="row">
+            <div class="col-md-12">
+        
+                <!-- Company and Contact Information Card -->
+                
+                <h4 class="p-1" style="background-color:#F9CF93;">Company Details</h4>
+                <br>
+                        <div class="row mt-3 mb-0">
+                            <!-- Company Information Column -->
+                            <div class="col-md-6 font-weight-bold text-dark">
+                                <!-- Client Information Section -->
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-3 ">Company Name:</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ company.name }}
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-3">Category:</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{company.category }}
+                                    </div>
+                                </div>
+        
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-3">Sub-Category:</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ company.sub_category }}
+                                    </div>
+                                </div>
+        
+                                <div class="row mb-1">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-3">Website:</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ company.website}}
+                                    </div>
+                                </div>    
+                            </div>
+                            
+                            <!-- Contact Information Column -->
+                            <div class="col-md-6 font-weight-bold text-dark">
+        
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-3">Province:</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ company.province }}
+                                    </div>
+                                </div>
+        
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-3">District:</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ company.district }}
+                                    </div>
+                                </div>
+        
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-3">Municipality:</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ company.municipality }}
+                                    </div>
+                                </div>
+        
+                                <div class="row mb-1">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-3">Address:</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ company.address }}
+                                    </div>
+                                </div>
+                            </div>
+        
+                            
+                                
+                            </div>
+                        </div>
+                   
+                
+        
+            </div><!-- end col -->
+        </div>
+        <!-- end row -->
+        {% if actions or officers %}
+    <div class="row p-4">
+        <div class="col-xl-8">
+            <h4 class="p-1" style="background-color:#F9CF93;">
+                Action History 
+                <span class="float-right">
+                    <a href="#" style="font-size: 15px;" data-toggle="modal" data-target="#exampleModalCenter">Add Update</a>
+                </span>
+                
+            </h4>
+            <br>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" >
+                            <h5 class="modal-title" id="exampleModalCenterTitle" >Client Update</h5>
+                            <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="background-color:#F9E4C8;">
+                    <form method="post" action="{% url 'company_profile' company.id %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="{{ form.officer.id_for_label }}">Officer:</label>
+                                    {{ form.officer }}
+                                </div>
+                                <div class="form-group">  
+                                    <label for="{{ description }}">Description:</label>                                 
+                                    {{ form.description }}
+                                  </div>                                    
+                        </div>
+                        <div class="modal-footer" >
+                            <button type="button" class="btn btn-secondary waves-effect waves-light" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-warning waves-effect waves-light" >Update</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+            <div id="action_accordion" class="custom-accordion mb-4">
+                {% for action in actions|slice:":8" %}
+                    <div class="card mb-0">
+                        <div class="card-header" id="action_heading{{ forloop.counter }}">
+                            <h5 class="m-0 font-size-15">
+                                <a class="d-block pt-2 pb-2 text-dark" data-toggle="collapse" href="#action_collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="action_collapse{{ forloop.counter }}">
+                                    {{ action.date }}&nbsp;&nbsp;&nbsp;&nbsp; {{ action.officer.name }}, {{ action.officer.designation }}
+                                    <span class="float-right">{{ action.admin }}<i class="mdi mdi-chevron-down accordion-arrow"></i></span>
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="action_collapse{{ forloop.counter }}" class="collapse" aria-labelledby="action_heading{{ forloop.counter }}" data-parent="#action_accordion">
+                            <div class="card-body">
+                                {{ action.description }}
+                            </div>
+                        </div>
+                    </div> <!-- end card-->
+                {% endfor %}
+            </div> <!-- end custom accordions-->
+        </div> <!-- end col -->
+        
+        <div class="col-xl-4">
+            <h4 class="p-1" style="background-color:#F9CF93;">Contact</h4>
+            <br>
+            <div id="officer_accordion" class="custom-accordion mb-4">
+                {% for officer in officers %}
+                    <div class="card mb-0">
+                        <div class="card-header" id="officer_heading{{ forloop.counter }}">
+                            <h5 class="m-0 font-size-15">
+                                <a class="d-block pt-2 pb-2 text-dark" data-toggle="collapse" href="#officer_collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="officer_collapse{{ forloop.counter }}">
+                                    {{ officer.name }} - {{ officer.designation }} <span class="float-right"><i class="mdi mdi-chevron-down accordion-arrow"></i></span>
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="officer_collapse{{ forloop.counter }}" class="collapse" aria-labelledby="officer_heading{{ forloop.counter }}" data-parent="#officer_accordion">
+                            <div class="card-body">
+                                <!-- Display officer details here -->
+                                Name: {{ officer.name }}<br>
+                                Designation: {{ officer.designation }}<br>
+                                Phone: {{ officer.phone }}<br>
+                                Email: {{ officer.email }}<br>
+                            </div>
+                        </div>
+                    </div> <!-- end card-->
+                {% endfor %}
+            </div> <!-- end custom accordions-->
+        </div> <!-- end col -->
+        
+        
+    </div>
+    {% endif %}
+    </div>
+    <!-- end card-body-->
+</div>
+
+
+ 
+
+
+
+
+{% endblock content %}

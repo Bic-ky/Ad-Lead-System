@@ -1,12 +1,13 @@
 from django.db.models import F, Sum
 from django.db.models.functions import Coalesce
-from .models import Advs,Newspaper,Province,District,Municipality,Company
-from account.models import ProvinceAdmin
-from .forms import NewspaperForm,CompanyForm,PaperForm
+from .models import Advs,Newspaper,Province,District,Municipality,Company,Officer
+from account.models import ProvinceAdmin,Action
+from .forms import NewspaperForm,CompanyForm,PaperForm,ActionForm
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from .filters import CompanyFilter
 from django.http import JsonResponse,HttpResponse
+from datetime import date
 
 
 def calculate_adv_spend(company_id):
@@ -141,7 +142,35 @@ def company(request):
     return render(request, 'company_list.html', context)
 
 
-# views.py
+def company_profile(request, company_id):
+    company = get_object_or_404(Company, id=company_id)
+    officers = Officer.objects.filter(company=company)
+    actions = Action.objects.filter(company=company)
+    user = request.user
+    today = date.today()
+
+    if request.method == 'POST':
+        form = ActionForm(company, request.POST)
+        if form.is_valid():
+            action = form.save(commit=False)
+            action.company = company
+            action.date = today
+            action.admin = user
+            form.save()  # Assuming you have a save method in your ActionForm
+    else:
+        form = ActionForm(company)
+
+    context = {
+        'company': company,
+        'officers': officers,
+        'actions': actions,
+        'form': form,
+    }
+    return render(request, 'company_profile.html', context)
+
+
+    
+
 def get_districts(request):
     province_id = request.GET.get('province_id')
     districts = District.objects.filter(province_id=province_id).order_by('name')

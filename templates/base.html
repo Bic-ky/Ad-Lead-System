@@ -46,12 +46,21 @@
 
     </head>
 
-    <body>        
+    <body>   
+        <style>
+            body {
+                background-image: url('{% static "img/5.svg" %}');
+                background-size: cover;
+                background-position: center;
+                height: 100vh;
+                margin: 0;
+            }
+          </style>    
         <!-- Begin page -->
         <div id="layout-wrapper">
             <div class="header-border"></div>
             <header id="page-topbar">
-                <div class="navbar-header">
+                <div class="navbar-header"style="background-color: rgba(255, 255, 255, 0.5);">
 
                     <div class="d-flex align-items-left">
                         <button type="button" class="btn btn-sm mr-2 d-lg-none px-3 font-size-16 header-item waves-effect"

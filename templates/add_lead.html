@@ -16,9 +16,18 @@
       padding: 10px;
     } 
   </style>
-  <div class="card" style="background-color:#F9E4C8;">
+  <style>
+    body {
+        background-image: url('{% static "img/5.svg" %}');
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        margin: 0;
+    }
+</style> 
+<div class="card" style="background-color: #F9E4C8; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);">
     <div class="card-body text-black">
-        <h4>ADD NEW LEAD</h4>
+        <h4>NEW LEAD</h4>
         <br>
         <form method="POST" action="" id="lead-form">
             {% csrf_token %}

@@ -1,5 +1,6 @@
 from django import forms
-from .models import Advs, Newspaper, Company,Category,SubCategory,Province,Municipality,District
+from .models import Advs, Newspaper, Company,Category,SubCategory,Province,Municipality,District,Officer
+from account.models import Action
 
 class NewspaperForm(forms.ModelForm):
     class Meta:
@@ -108,6 +109,25 @@ class PaperForm(forms.ModelForm):
     class Meta:
         model = Newspaper
         fields = ['name', 'type', 'level', 'front_bw', 'front_color', 'inside_bw', 'inside_color', 'back_bw', 'back_color']
+        
+
+class ActionForm(forms.ModelForm):
+    class Meta:
+        model = Action
+        fields = ['description', 'officer']
+
+    def __init__(self, company, *args, **kwargs):
+        super(ActionForm, self).__init__(*args, **kwargs)
+        self.fields['description'].widget = forms.Textarea(
+            attrs={'class': 'form-control', 'rows': 3}
+        )
+        self.fields['officer'].widget = forms.Select(attrs={'class': 'form-control'})
+        
+        # Add queryset to officer field based on the company
+        self.fields['officer'].queryset = Officer.objects.filter(company=company)
+
+        
+        
 
         
       

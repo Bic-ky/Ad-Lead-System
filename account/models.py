@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models.signals import post_save, pre_save
 from project.models import Province
 from django.contrib.auth import get_user_model
+from project.models import Company,Officer
 
 # Create your models here.
 
@@ -82,3 +83,16 @@ class ProvinceAdmin(models.Model):
     def __str__(self):
         return f"{self.admin}, {self.province}"
 
+
+class Action(models.Model):
+    company = models.ForeignKey('project.Company', on_delete=models.CASCADE)
+    officer = models.ForeignKey('project.Officer', on_delete=models.CASCADE)
+    date = models.DateField()
+    description = models.TextField()
+    admin = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': User.ADMIN}, verbose_name='Admin User')
+
+    def __str__(self):
+        return f"{self.date} - {self.company} - {self.officer} - {self.admin}"
+
+    class Meta:
+        verbose_name_plural = 'Actions'

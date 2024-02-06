@@ -1,20 +1,24 @@
+
+
 {% extends "base.html" %}
 
 {% block content %}
 <div class="col-xl-12">
-    <div class="card">
+  <div class="card" style="background-color: rgba(255, 255, 255, 0.5); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);">
         <div class="card-body">
-            <div class="col-lg-12 text-right">
-              
-              {% comment %} <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="modal" data-target="#exampleModalLong">
-                Add Action
-              </button> {% endcomment %}
-            <button class="btn btn-primary ml-1" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-              <i class="mdi mdi-filter"></i>&nbsp;Filters
-            </button>
-            <br>
-            <div class="collapse" id="collapseExample">
-                <div class="card card-body">
+          <div class="row">
+            <div class="col-lg-6">
+                <h4>My Province Companies</h4>
+            </div>
+            <div class="col-lg-6 text-right">
+                <button class="btn btn-primary ml-1" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <i class="mdi mdi-filter"></i>&nbsp;Filters
+                </button>
+            </div>
+        </div>
+        
+            <div class="collapse mt-2" id="collapseExample">
+                <div class="card card-body"  style="background-color: rgba(255, 255, 255, 0.5);">
                     <form method="get">
                         <div class="form-row">
                           <div class="form-group col-md-3">
@@ -42,81 +46,12 @@
                 </div>
                 </div>
                 </div>
-                <br>
-            {% comment %} <h4 class="card-title"></h4> {% endcomment %}
-            <br>
 
-            <ul class="nav nav-tabs nav-justified mb-3">
-                <li class="nav-item">
-                    <a href="#manual" data-toggle="tab" aria-expanded="true" class="nav-link ">
-                        <i class="mdi mdi-home-variant d-lg-none d-block"></i>
-                        <!-- Display the count of manual actions that are not completed -->
-                        <span class="d-none d-lg-block">All Company</span>
-                                                    
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#automatic" data-toggle="tab" aria-expanded="false" class="nav-link active ">
-                        <i class="mdi mdi-account-circle d-lg-none d-block"></i>
-                        <span class="d-none d-lg-block">My Company </span>
-                        
-                    </a>
-                </li>
-                
-            </ul>
-        
-    <div class="tab-content">
-        <div class="tab-pane " id="manual">
-            <div class="row">
-                <div class="col-12">
-                        <div class="card-body">
-                          <table id="manual-datatable" class="table custom-datatable">
-                              <thead>
-                                <tr style="background:#F9CF93;color:#5C5470; ">
-
-                                      <th>Name</th> 
-                                      <th>Category</th>
-                                      <th>Sub category</th>
-                                      <th>Province</th>
-                                      <th>District</th>
-                                      <th>Municipality</th>
-                                      <th>Address</th>
-                                      <th>Website</th>
-                                      
-                                      
-                                      
-                                </tr>
-                              </thead>
-                              <tbody>
-                                  {% for comp in company %}
-                                  
-                                  <tr style="background-color: #F9E4C8;color:black;">
-                                    
-                                  <td>{{comp.name}}</td>
-                                  <td>{{comp.category}}</td>
-                                  <td>{{comp.sub_category}}</td>
-                                  <td>{{comp.province}}</td>
-                                  <td>{{comp.district}}</td>
-                                  <td>{{comp.municipality}}</td>
-                                  <td>{{comp.address}}</td> 
-                                  <td>{{comp.website}}</td>
-                                                                       
-                                  </tr>
-                                  
-                                  {% endfor %}
-                              </tbody>
-                          </table>    
-                </div> <!-- end card body-->
-                 
-                </div><!-- end col-->
-            </div>
-            <!-- end row-->
-        
-        </div>
-        <div class="tab-pane show active" id="automatic">
           <div class="row">
               <div class="col-12">
                   <div class="card-body">
+                    
+                    
                         {% csrf_token %}
                       <table id="auto-datatable" class="table custom-datatable">
                           <thead>
@@ -129,10 +64,7 @@
                                 <th>District</th>
                                 <th>Municipality</th>
                                 <th>Address</th>
-                                <th>Website</th>
-                                
-                                
-                                
+                                <th>Website</th>                               
                           </tr>
                           </thead>
                           <tbody>
@@ -140,7 +72,7 @@
                                   
                             <tr style="background-color: #F9E4C8;color:black;">
                               
-                            <td>{{comp.name}}</td>
+                            <td><a href="{% url 'company_profile' company_id=comp.id %}">{{comp.name}}</td>
                             <td>{{comp.category}}</td>
                             <td>{{comp.sub_category}}</td>
                             <td>{{comp.province}}</td>
@@ -159,7 +91,7 @@
               </div><!-- end col-->
           </div>
           <!-- end row-->
-      </div>
+
       
         
     </div>
