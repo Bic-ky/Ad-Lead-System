@@ -9,52 +9,45 @@
 
     'use strict';
 
-    function initMetisMenu() {
-        //metis menu
-        $("#side-menu").metisMenu();
-    }
-
-    function initLeftMenuCollapse() {
-        // Left menu collapse
-        $('#vertical-menu-btn').on('click', function () {
-            $('body').toggleClass('enable-vertical-menu');
-        });
-
-        $('.menu-overlay').on('click', function () {
-            $('body').removeClass('enable-vertical-menu');
-            return;
-        });
+    function initDropdownMenu() {
+        $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
+            if (!$(this).next().hasClass('show')) {
+              $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+            }
+            var $subMenu = $(this).next(".dropdown-menu");
+            $subMenu.toggleClass('show');
+    
+            return false;
+        });   
     }
 
     function initActiveMenu() {
         // === following js will activate the menu in left side bar based on url ====
-        $("#sidebar-menu a").each(function () {
+        $(".topnav-menu .navbar-nav a").each(function () {
             var pageUrl = window.location.href.split(/[?#]/)[0];
-            if (this.href == pageUrl) {
+            if (this.href == pageUrl) {  
                 $(this).addClass("active");
-                $(this).parent().addClass("mm-active"); // add active to li of the current link
-                $(this).parent().parent().addClass("mm-show");
-                $(this).parent().parent().prev().addClass("mm-active"); // add active class to an anchor
-                $(this).parent().parent().parent().addClass("mm-active");
-                $(this).parent().parent().parent().parent().addClass("mm-show"); // add active to li of the current link
-                $(this).parent().parent().parent().parent().parent().addClass("mm-active");
+                $(this).parent().addClass("active"); // add active to li of the current link
+                $(this).parent().parent().addClass("active");
+                $(this).parent().parent().parent().parent().addClass("active");
             }
         });
     }
 
     function initComponents() {
+        // Tooltips
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
 
+        // Popovers
         $(function () {
             $('[data-toggle="popover"]').popover()
         })
     }
 
     function init() {
-        initMetisMenu();
-        initLeftMenuCollapse();
+        initDropdownMenu();
         initActiveMenu();
         initComponents();
         Waves.init();
@@ -63,11 +56,3 @@
     init();
 
 })(jQuery)
-
-
-
-
-
-
-
-

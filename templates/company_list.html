@@ -50,9 +50,6 @@
           <div class="row">
               <div class="col-12">
                   <div class="card-body">
-                    
-                    
-                        {% csrf_token %}
                       <table id="auto-datatable" class="table custom-datatable">
                           <thead>
                             <tr style="background:#F9CF93;color:#5C5470; ">
@@ -99,10 +96,34 @@
     </div> <!-- end card-->
 </div> <!-- end col -->
 <script>
-    $(document).ready(function () {
-        $('.custom-datatable').DataTable();
-    });
+  $(document).ready(function () {
+      var customDatatable = $('.custom-datatable').DataTable({
+          "language": {
+              "paginate": {
+                  "previous": '<i class="mdi mdi-chevron-left"></i>',
+                  "next": '<i class="mdi mdi-chevron-right"></i>'
+              }
+          }
+      });
+
+      customDatatable.on('draw.dt', function () {
+          // Apply styling to make the background transparent after each draw
+          $('.custom-datatable_wrapper .paginate_button.previous, .custom-datatable_wrapper .paginate_button.next').css('background-color', 'transparent');
+      });
+  });
 </script>
+<style>
+  .custom-datatable_wrapper .paginate_button.previous,
+  .custom-datatable_wrapper .paginate_button.next {
+      background-color: transparent !important;
+  }
+</style>
+
+
+
+
+
+
 
 {% endblock content %}
 
