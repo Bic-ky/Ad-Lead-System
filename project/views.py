@@ -10,6 +10,7 @@ from django.http import JsonResponse,HttpResponse
 from datetime import date
 
 
+
 def calculate_adv_spend(company_id):
     # Filter Advs by the given company_id and annotate with the spend of type * size
     queryset = Advs.objects.filter(company_id=company_id).annotate(
@@ -191,6 +192,21 @@ def get_municipalities(request):
         options += f'<option value="{municipality.id}">{municipality.name}</option>'
 
     return HttpResponse(options)
+
+
+def profile(request):
+    
+    return render(request , 'profile.html')
+
+
+
+
+
+
+
+
+
+
 
 
 

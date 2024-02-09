@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="col-md" >
+    <div class="card mb-3" style="background-color: rgba(255, 255, 255, 0.5); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Full Name</h6>
+          </div>
+          <div class="col-sm-9">
+            {{user.full_name}}
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Email</h6>
+          </div>
+          <div class="col-sm-9 ">
+            {{user.email}}
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Phone</h6>
+          </div>
+          <div class="col-sm-9 ">
+            {{user.phone_number}}
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Role</h6>
+          </div>
+          <div class="col-sm-9 ">
+            {% if user.role == 1 %}
+                ADMIN
+            {% else %}
+                AGENT
+            {% endif %}
+            
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock content %}
